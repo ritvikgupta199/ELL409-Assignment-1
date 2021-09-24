@@ -10,7 +10,7 @@ class DataLoader:
 
     def load_data(self, split):
         f = open(self.file_path, 'r')
-        target, input_x = [], []
+        input_x, target = [], []
         lines = f.readlines()
         split = int(split*len(lines))
         for line in lines:
@@ -30,9 +30,6 @@ class DataLoader:
         if len(self.test_input) > 0:
             self.test_input = (self.test_input-mu)/sigma
         return mu, sigma
-
-    def get_mu_sigma(self):
-        return (self.mu, self.sigma)
 
     def get_data_queue(self, train = True):
         data_queue = []
