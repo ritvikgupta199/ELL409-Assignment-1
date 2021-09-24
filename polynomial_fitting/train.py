@@ -28,19 +28,24 @@ def fit_polynomial(args):
 
     if args.method == 'gd':
         for i in range(args.epochs):
-            avg_loss = AverageMeter()
+            train_loss, test_loss = AverageMeter(), AverageMeter()
             for (input_x, target) in train_data_queue:
                 loss = model.train_step(input_x, target, args.lr, args.lamb)
-                avg_loss.update(loss, len(input_x))
-            print(f'Epoch {i+1}: {avg_loss.avg}')
+                train_loss.update(loss, len(input_x))
+            for (input_x, target) in test_data_queue:
+                _, loss = model.forward(input_x, target)
+                test_loss.update(loss, len(input_x))
+            print(f'Epoch {i+1}: Train Loss {train_loss.avg} | Test Loss {test_loss.avg}')
     else:
-        x,t = train_data_queue[0] 
+        x, t = train_data_queue[0] 
         model.pinv_method(x, t, args.lamb)
         y, loss = model.forward(x, t)
         print(f'Training Loss: {loss}')
 
-        x,t = test_data_queue[0]
-        y, loss = model.forward(x, t)
-        print(f'Test Loss: {loss}')
+        if len(test_data_queue) > 0:
+          x, t = test_data_queue[0]
+          y, loss = model.forward(x, t)
+          print(f'Test Loss: {loss}')
 
-    print(f'weights={model.weights}')
+    weights = model.get_weights(dataloader.mu, dataloader.sigma)
+    print(f'weights={weights}')

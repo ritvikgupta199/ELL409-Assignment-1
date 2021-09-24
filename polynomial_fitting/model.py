@@ -23,3 +23,7 @@ class PolynomialFitter:
         self.weights = self.weights - lr*del_w
         return loss
     
+    def get_weights(self, mu, sigma):
+        weights = self.weights/sigma
+        weights[0] -= (weights*mu).sum()
+        return weights

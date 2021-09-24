@@ -27,8 +27,12 @@ class DataLoader:
         sigma = np.sqrt(np.square((self.train_input-mu)).mean(0))
         mu[0], sigma[0] = 0.0, 1.0
         self.train_input = (self.train_input-mu)/sigma
-        self.test_input = (self.test_input-mu)/sigma
+        if len(self.test_input) > 0:
+            self.test_input = (self.test_input-mu)/sigma
         return mu, sigma
+
+    def get_mu_sigma(self):
+        return (self.mu, self.sigma)
 
     def get_data_queue(self, train = True):
         data_queue = []
