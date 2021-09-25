@@ -18,6 +18,7 @@ class DataLoader:
             x = float(nums[0])**np.arange(self.poly_deg+1)
             input_x.append(x)
             target.append(float(nums[1]))
+        f.close()
         train_input, train_target = np.array(input_x[:split]), np.array(target[:split])
         test_input, test_target = np.array(input_x[split:]), np.array(target[split:])
         return train_input, train_target, test_input, test_target
