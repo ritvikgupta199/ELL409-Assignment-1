@@ -5,7 +5,9 @@ class DataLoader:
         self.file_path = file_path
         self.train = train
         self.input_x, self.target = self.load_data()
-        self.mu, self.sigma = self.normalise_data()    
+        self.mu, self.sigma = 0, 1
+        if train:
+            self.mu, self.sigma = self.normalise_data()
         self.batch_size = len(self.input_x) if batch_size == -1 else batch_size
 
     def load_data(self):
@@ -14,7 +16,7 @@ class DataLoader:
         input_x, target = [], []
         for line in lines:
             data = line.strip().split(',')
-            x = [float(n) for n in data[0].split('/')]
+            x = float(data[0].split('/')[0])**np.arange(3)
             input_x.append(x)
             if self.train:
                 target.append(float(data[1]))
@@ -25,14 +27,9 @@ class DataLoader:
     def normalise_data(self):
         mu = self.input_x.mean(0)
         sigma = np.sqrt(np.square((self.input_x-mu)).mean(0))
-        mu[1], sigma[1] = 0.0, 1.0
+        mu[0], sigma[0] = 0.0, 1.0
         self.input_x = (self.input_x-mu)/sigma
-        if self.train:
-            mu_t = self.target.mean(0)
-            sigma_t = np.sqrt(np.square((self.target-mu_t)).mean(0))
-            self.target = (self.target-mu_t)/sigma_t
-            return mu_t, sigma_t
-        return 0, 0
+        return mu, sigma
 
     def get_data_queue(self):
         data_queue = []

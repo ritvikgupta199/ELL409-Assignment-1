@@ -12,7 +12,7 @@ def setup():
     parser.add_argument("--split", default=0.8, type=float, help = "Split for train/test set")
     return parser.parse_args()
 
-def train_model(args, batch_size, deg, lr, lamb, split, tag, log=False, log_wts=False):
+def train_model(args, epochs, batch_size, deg, lr, lamb, split, tag, log=False, log_wts=False):
     model = PolynomialFitter(deg)
     dataloader = DataLoader(args.data_file, batch_size, deg, split)
     train_data_queue = dataloader.get_data_queue()
@@ -20,7 +20,7 @@ def train_model(args, batch_size, deg, lr, lamb, split, tag, log=False, log_wts=
 
     if log or log_wts:
         logger = utils.Logger(args.log_path, tag)
-    for i in range(args.epochs):
+    for i in range(epochs):
         train_loss, test_loss = utils.AverageMeter(), utils.AverageMeter()
         for (input_x, target) in train_data_queue:
             loss = model.train_step(input_x, target, lr, lamb)
@@ -61,17 +61,18 @@ if __name__ == '__main__':
         weights = ','.join(map(str, weights))
         logger.log(f'Degree {d}: Weights: {weights}')
 
-    # weights = train_using_pinv(args, 10, 0, 1)
-    # weights = ','.join(map(str, weights))
-    # logger.log(f'Degree 10: Weights: {weights}')
+    logger = utils.Logger(args.log_path, 'polynomial_deg_loss')
+    for d in range(20):
+        _, train_loss, test_loss = train_using_pinv(args, d, 0, 0.7)
+        logger.log(f'Degree {d}: Training Loss: {train_loss} Testing Loss: {test_loss}')
 
-    # weights = train_model(args, -1, 10, 2e-1, 0, 1, 'polynomial_deg')
-    # weights = ','.join(map(str, weights))
-    # logger.log(f'Degree 10: Weights: {weights}')
+    #Training the model on the tuned hyperparameters, logging losses after each epoch
+    epochs, batch_size, poly_deg, lr, lamb, split = 50, 10, 10, 2e-3, 0, 0.85
+    train_model(args, epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_loss', log=True)
 
     #Training the model on the tuned hyperparameters, logging weights after each epoch
-    # batch_size, poly_deg, lr, lamb, split = 10, 10, 2e-3, 0.5, 0.85
-    # train_model(args, batch_size, poly_deg, lr, lamb, split, 'grad_descent', log=True, log_wts=True)
+    batch_size, poly_deg, lr, lamb, split = 10, 10, 1e-1, 0, 1
+    train_model(args, args.epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_wts', log_wts=True)
 
     #Training the model on different values of lambda
     logger = utils.Logger(args.log_path, 'lambda')
@@ -80,5 +81,6 @@ if __name__ == '__main__':
         weights, _, _ = train_using_pinv(args, 10, l, 1)
         weights = ','.join(map(str, weights))
         logger.log(f'Lambda {l}: Weights: {weights}')
+
 
     

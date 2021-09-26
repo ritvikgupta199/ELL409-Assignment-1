@@ -17,9 +17,9 @@ class LinearModel:
         loss = ((y-target)**2).mean()/2
         return y, loss
 
-    def get_preds(self, input_x):
+    def get_preds(self, input_x,  mu, sigma):
+        input_x = (input_x - mu)/sigma
         y = np.matmul(input_x, self.weights)
-        y = (y*self.sigma + self.mu)
         return y
 
     def train_step(self, input_x, target, lr, wt_decay):

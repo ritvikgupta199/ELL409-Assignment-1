@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     y = []
     for (input_x, _) in test_data_queue:
-        y.append(model.get_preds(input_x))
+        y.append(model.get_preds(input_x, train_data.mu, train_data.sigma))
     y = np.concatenate(y, axis=0)
     print(f'Output: {y}')
 
