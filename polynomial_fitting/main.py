@@ -8,7 +8,7 @@ def setup():
     parser = argparse.ArgumentParser()
     parser.add_argument("--part", default=1, type=int, help="Part of code to run")
     parser.add_argument("--method", default="gd", help = "Type of solver")  
-    parser.add_argument("--lr", default=0.01, type=float, help = "Learning Rate for gradient descent")
+    parser.add_argument("--lr", default=1e-2, type=float, help = "Learning Rate for gradient descent")
     parser.add_argument("--epochs", default=100, type=int, help = "Number of epochs")
     parser.add_argument("--batch_size", default=10, type=int, help = "Batch size")
     parser.add_argument("--lamb", default=0, type=float, help = "Regularization constant")

@@ -2,18 +2,18 @@ import os
 import numpy as np
 
 class AverageMeter(object):
-  def __init__(self):
-    self.reset()
+    def __init__(self):
+        self.reset()
 
-  def reset(self):
-    self.avg = 0
-    self.sum = 0
-    self.cnt = 0
+    def reset(self):
+        self.avg = 0
+        self.sum = 0
+        self.cnt = 0
 
-  def update(self, val, n=1):
-    self.sum += val * n
-    self.cnt += n
-    self.avg = self.sum / self.cnt
+    def update(self, val, n=1):
+        self.sum += val * n
+        self.cnt += n
+        self.avg = self.sum / self.cnt
 
 class Logger():
     def __init__(self, log_path, tag):
@@ -21,9 +21,8 @@ class Logger():
         self.log_file = os.path.join(log_path, f'{tag}.txt')
         if not os.path.exists(log_path):
             os.makedirs(log_path)
-        if not os.path.isfile(self.log_file):
-            f = open(self.log_file, 'x')
-            f.close()
+        if os.path.isfile(self.log_file):
+            os.remove(self.log_file)
     
     def log(self, logs):
         f = open(self.log_file, 'a')

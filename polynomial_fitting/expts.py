@@ -8,7 +8,7 @@ def setup():
     parser = argparse.ArgumentParser()
     parser.add_argument("--log_path", default="results/", type=str, help = "Directory where logs should be stored")  
     parser.add_argument("--data_file", default="data/gaussian.csv", type=str, help = "Read content from the file")
-    parser.add_argument("--epochs", default=100, type=int, help = "Number of epochs")
+    parser.add_argument("--epochs", default=5000, type=int, help = "Number of epochs")
     parser.add_argument("--split", default=0.8, type=float, help = "Split for train/test set")
     return parser.parse_args()
 
@@ -18,7 +18,8 @@ def train_model(args, batch_size, deg, lr, lamb, split, tag, log=False, log_wts=
     train_data_queue = dataloader.get_data_queue()
     test_data_queue = dataloader.get_data_queue(train=False)
 
-    logger = utils.Logger(args.log_path, tag)
+    if log or log_wts:
+        logger = utils.Logger(args.log_path, tag)
     for i in range(args.epochs):
         train_loss, test_loss = utils.AverageMeter(), utils.AverageMeter()
         for (input_x, target) in train_data_queue:
@@ -50,11 +51,19 @@ if __name__ == '__main__':
 
     #Training the model for various polynomial degrees
     logger = utils.Logger(args.log_path, 'polynomial_deg')
-    for d in range(10):
-        # weights = train_model(args, 100, d, 1e-1, 0, 1, 'polynomial_deg')
-        weights = train_using_pinv(args, d, 0, 1)
+    for d in range(11):
+        weights = train_model(args, 100, d, 2e-1, 0, 1, 'polynomial_deg')
+        # weights = train_using_pinv(args, d, 0, 1)
         weights = ','.join(map(str, weights))
         logger.log(f'Degree {d}: Weights: {weights}')
+
+    # weights = train_using_pinv(args, 10, 0, 1)
+    # weights = ','.join(map(str, weights))
+    # logger.log(f'Degree 10: Weights: {weights}')
+
+    # weights = train_model(args, -1, 10, 2e-1, 0, 1, 'polynomial_deg')
+    # weights = ','.join(map(str, weights))
+    # logger.log(f'Degree 10: Weights: {weights}')
 
     #Training the model on the tuned hyperparameters, logging weights after each epoch
     batch_size, poly_deg, lr, lamb, split = 10, 4, 2e-3, 0.5, 0.85
