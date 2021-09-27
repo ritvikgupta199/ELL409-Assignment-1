@@ -37,3 +37,8 @@ def get_output_from_weights(x, weights):
     deg = len(weights)
     y = np.matmul(x.reshape(-1,1).repeat(deg, 1)**np.arange(deg).reshape(1,-1), weights)
     return y
+
+def get_weights_from_text(weights):
+    tokens = weights.split(',')
+    weights = np.array([float(wt) for wt in tokens])
+    return weights
