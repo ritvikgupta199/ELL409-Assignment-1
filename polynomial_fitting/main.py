@@ -21,7 +21,8 @@ def setup():
 
 if __name__ == '__main__':
     args = setup()
-    print(args)
+    if args.print:
+        print(args)
 
     model = PolynomialFitter(args.polynomial)
     if args.method == 'pinv':

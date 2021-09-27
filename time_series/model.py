@@ -27,3 +27,8 @@ class LinearModel:
         del_w = ((y-target).reshape(-1,1)*input_x).mean(0) + wt_decay*self.weights
         self.weights = self.weights - lr*del_w
         return loss
+
+    def get_weights(self, mu, sigma):
+        weights = self.weights/sigma
+        weights[0] -= (weights*mu).sum()
+        return weights
