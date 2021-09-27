@@ -6,7 +6,7 @@ import utils
 
 def setup():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--log_path", default="results/", type=str, help = "Directory where logs should be stored")  
+    parser.add_argument("--log_path", default="results_1a/", type=str, help = "Directory where logs should be stored")  
     parser.add_argument("--data_file", default="data/gaussian.csv", type=str, help = "Read content from the file")
     parser.add_argument("--epochs", default=5000, type=int, help = "Number of epochs")
     parser.add_argument("--split", default=0.8, type=float, help = "Split for train/test set")
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     # For loss v/s polynomial degree plot
     logger = utils.Logger(args.log_path, 'polynomial_deg_loss')
-    for d in range(20):
+    for d in range(16):
         _, train_loss, test_loss = train_using_pinv(args, d, 0, 0.2)
         logger.log(f'Degree {d}: Training Loss: {train_loss} Testing Loss: {test_loss}')
 
