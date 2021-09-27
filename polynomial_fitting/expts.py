@@ -54,27 +54,28 @@ def train_using_pinv(args, deg, lamb, split):
 if __name__ == '__main__':
     args = setup()
 
-    #Training the model for various polynomial degrees on entire data
+    # For plots of different degree polynomials
     logger = utils.Logger(args.log_path, 'polynomial_deg')
     for d in range(12):
         weights, _, _ = train_using_pinv(args, d, 0, 1)
         weights = ','.join(map(str, weights))
         logger.log(f'Degree {d}: Weights: {weights}')
 
+    # For loss v/s Polynomial degree plot
     logger = utils.Logger(args.log_path, 'polynomial_deg_loss')
     for d in range(20):
         _, train_loss, test_loss = train_using_pinv(args, d, 0, 0.7)
         logger.log(f'Degree {d}: Training Loss: {train_loss} Testing Loss: {test_loss}')
 
-    #Training the model on the tuned hyperparameters, logging losses after each epoch
+    # For loss v/s number of epochs plot
     epochs, batch_size, poly_deg, lr, lamb, split = 50, 10, 10, 2e-3, 0, 0.85
     train_model(args, epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_loss', log=True)
 
-    #Training the model on the tuned hyperparameters, logging weights after each epoch
+    # For plots of different polynomials after some intervals of gradient descent
     batch_size, poly_deg, lr, lamb, split = 10, 10, 1e-1, 0, 1
     train_model(args, args.epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_wts', log_wts=True)
 
-    #Training the model on different values of lambda
+    # For plots of different polynomials at various values of lambda
     logger = utils.Logger(args.log_path, 'lambda')
     lamb = [0, 1e-2, 1e-1, 1]
     for l in lamb:
