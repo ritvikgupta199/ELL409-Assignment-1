@@ -26,14 +26,14 @@ if __name__ == '__main__':
         _, train_loss, test_loss = utils.train_using_pinv(args, d, 0, 0.2)
         logger.log(f'Degree {d}: Training Loss: {train_loss} Testing Loss: {test_loss}')
 
-    # For finding the values of (y-t)
+    # For finding the values of (t-y)
     logger = utils.Logger(args.log_path, 'noise')
-    deg, split, lamb = 11, 1, 0
+    deg, split, lamb = 11, 1, 1e-12
     model = PolynomialFitter(deg)
     dataloader = DataLoader(args.data_file, -1, deg, split)
     x, t = dataloader.get_data_queue()[0]
     
     model.pinv_method(x, t, lamb)
     y, loss = model.forward(x, t)
-    for ns in (y-t):
+    for ns in (t-y):
         logger.log(str(ns))
