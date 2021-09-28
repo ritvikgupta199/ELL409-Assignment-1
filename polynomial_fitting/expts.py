@@ -8,7 +8,6 @@ def setup():
     parser = argparse.ArgumentParser()
     parser.add_argument("--log_path", default="results_1a/", type=str, help = "Directory where logs should be stored")  
     parser.add_argument("--data_file", default="data/gaussian.csv", type=str, help = "Read content from the file")
-    parser.add_argument("--epochs", default=5000, type=int, help = "Number of epochs")
     parser.add_argument("--split", default=0.8, type=float, help = "Split for train/test set")
     return parser.parse_args()
 
@@ -78,8 +77,8 @@ if __name__ == '__main__':
     train_model(args, epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_loss', log=True)
 
     # For plots of different polynomials after some intervals of gradient descent
-    batch_size, poly_deg, lr, lamb, split = 10, 10, 1e-1, 0, 1
-    train_model(args, args.epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_wts', log_wts=True)
+    epochs, batch_size, poly_deg, lr, lamb, split = 5000, 10, 10, 1e-1, 0, 1
+    train_model(args, epochs, batch_size, poly_deg, lr, lamb, split, 'grad_descent_wts', log_wts=True)
 
     # For loss v/s number of epochs plot for mini batch gradient descent
     epochs, batch_size, poly_deg, lr, lamb, split = 50, 1, 10 , 2e-3, 0, 0.2
@@ -104,4 +103,3 @@ if __name__ == '__main__':
         weights, _, _ = train_using_pinv(args, 10, 0, d)
         weights = ','.join(map(str, weights))
         logger.log(f'Data split {d}: Weights: {weights}')
-    

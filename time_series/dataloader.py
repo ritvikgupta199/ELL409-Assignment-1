@@ -25,7 +25,7 @@ class TrainDataLoader:
     
     def normalise_data(self):
         mu = self.input_x.mean(0)
-        sigma = np.sqrt(np.square((self.input_x-mu)).mean(0))
+        sigma = np.std((self.input_x-mu), axis=0)
         mu[0], sigma[0] = 0.0, 1.0
         self.input_x = (self.input_x-mu)/sigma
         return mu, sigma
