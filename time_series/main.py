@@ -5,15 +5,15 @@ from model import LinearModel
 
 def setup():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--method", default="pinv", help = "Type of solver")  
-    parser.add_argument("--lr", default=0.01, type=float, help = "Learning Rate for gradient descent")
-    parser.add_argument("--epochs", default=10000, type=int, help = "Number of epochs")
-    parser.add_argument("--lamb", default=0, type=float, help = "Regularization constant")
-    parser.add_argument("--in_features", default=8, type=int, help = "Number of in features to consider")
-    parser.add_argument("--result", default="results_2/submit.csv", type=str, help = "Files to store plots") 
-    parser.add_argument("--log_wts", default="results_2/log_wts.txt", type=str, help = "Files to store weights")  
-    parser.add_argument("--train_data", default="data/train.csv", type=str, help = "Training data file")
-    parser.add_argument("--test_data", default="data/test.csv", type=str, help = "Testing data file")
+    parser.add_argument("--method", default="pinv", help="Type of solver")  
+    parser.add_argument("--lr", default=0.01, type=float, help="Learning Rate for gradient descent")
+    parser.add_argument("--epochs", default=10000, type=int, help="Number of epochs")
+    parser.add_argument("--lamb", default=0, type=float, help="Regularization constant")
+    parser.add_argument("--in_features", default=8, type=int, help="Number of in features to consider")
+    parser.add_argument("--result", default="results_2/submit.csv", type=str, help="Files to store plots") 
+    parser.add_argument("--log_wts", default="results_2/log_wts.txt", type=str, help="Files to store weights")  
+    parser.add_argument("--train_data", default="data/train.csv", type=str, help="Training data file")
+    parser.add_argument("--test_data", default="data/test.csv", type=str, help="Testing data file")
     return parser.parse_args()
 
 if __name__ == '__main__':

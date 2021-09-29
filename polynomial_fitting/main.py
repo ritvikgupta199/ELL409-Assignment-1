@@ -6,17 +6,17 @@ import utils
 
 def setup():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--part", default=1, type=int, help = "Part of code to run")
-    parser.add_argument("--method", default="pinv", type=str, help = "Type of solver") 
-    parser.add_argument("--batch_size", default=10, type=int, help = "Batch size")
-    parser.add_argument("--lamb", default=0, type=float, help = "Regularization constant")
-    parser.add_argument("--X", default="data/gaussian.csv", type=str, help = "Path to data file")
-    parser.add_argument("--polynomial", default=8, type=int, help = "Degree of polynomial to fit")
-    parser.add_argument("--lr", default=5e-2, type=float, help = "Learning Rate for gradient descent")
-    parser.add_argument("--epochs", default=4000, type=int, help = "Number of epochs")
-    parser.add_argument("--result_dir", default="", type=str, help = "Files to store plots")  
-    parser.add_argument("--split", default=1, type=float, help = "Split for train/test set")
-    parser.add_argument("--print", default=0, type=bool, help = "Print losses")
+    parser.add_argument("--part", default=1, type=int, help="Part of code to run")
+    parser.add_argument("--method", default="pinv", type=str, help="Type of solver") 
+    parser.add_argument("--batch_size", default=10, type=int, help="Batch size")
+    parser.add_argument("--lamb", default=0, type=float, help="Regularization constant")
+    parser.add_argument("--X", default="data/gaussian.csv", type=str, help="Path to data file")
+    parser.add_argument("--polynomial", default=8, type=int, help="Degree of polynomial to fit")
+    parser.add_argument("--lr", default=5e-2, type=float, help="Learning Rate for gradient descent")
+    parser.add_argument("--epochs", default=10000, type=int, help="Number of epochs")
+    parser.add_argument("--result_dir", default="", type=str, help="Files to store plots")  
+    parser.add_argument("--split", default=1, type=float, help="Split for train/test set")
+    parser.add_argument("--print", dest='print', action='store_true', help="Print losses")
     return parser.parse_args()
 
 if __name__ == '__main__':
